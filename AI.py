@@ -5,7 +5,7 @@ possible_scores = {'ones' : 0, 'twos' : 0, 'threes' : 0, 'fours' : 0, 'fives' : 
           'small straight' : 0, 'large straight' : 0, 'full house' : 0}
 
 score = {'ones' : 0, 'twos' : 0, 'threes' : 0, 'fours' : 0, 'fives' : 0, 'sixes' : 0,
-          'three of a kind' : 0, 'two of a kind' : 0,
+          'two of a kind' : 0, 'three of a kind' : 0,
           'small straight' : 0, 'large straight' : 0, 'full house' : 0}
 
 rolls = 0
@@ -15,6 +15,7 @@ three = 0
 four = 0
 five = 0
 six = 0
+bonus = 0
 
 def start_roll():
     global dice1, dice2, dice3, dice4, dice5
@@ -178,16 +179,40 @@ def sixes(six):
         possible_scores['sixes'] = six
 
 def bonus(bonus):
-    pass
+    num = 0
+    num += score['ones']
+    num += score['twos']
+    num += score['threes']
+    num += score['fours']
+    num += score['fives']
+    num += score['sixes']
+    if num >= 63:
+        bonus = 63
+    return bonus
 
-start_roll()
+def three_of_a_kind():
+    list = [dice1, dice2, dice3, dice4, dice5]
+    list.sort()
+    if list[0] == list[2] and list[0] != list[3]:
+        three_kind = dice1+dice2+dice3+dice4+dice5
+        return three_kind
 
-roll_again(rolls)
-ones(one)
-twos(two)
-threes(three)
-fours(four)
-fives(five)
-sixes(six)
+def four_of_a_kind():
+    list = [dice1, dice2, dice3, dice4, dice5]
+    list.sort()
+    if list[0] == list[3] and list[0] != list[4]:
+        four_kind = dice1+dice2+dice3+dice4+dice5
+        return four_kind
 
-print(possible_scores)
+def small_straight():
+    list = [dice1, dice2, dice3, dice4, dice5]
+    list.sort()
+    l2 = [[dice1,dice2,dice3,dice4],[dice2,dice3,dice4,dice5]]
+    if [1,2,3,4] in l2 or [2,3,4,5] in l2 or [3,4,5,6] in l2:
+        return 30
+
+def large_straight():
+    list = [dice1, dice2, dice3, dice4, dice5]
+    list.sort()
+    if [1,2,3,4,5] in list or [2,3,4,5,6] in list:
+        return 40
